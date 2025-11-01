@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, Play, Grid3X3, Undo, Redo, FolderOpen } from 'lucide-react';
+import { ArrowLeft, Save, Play, Grid, Undo, Redo, FolderOpen } from 'lucide-react';
 import { useWorldStore } from '../stores/worldStore';
 import Navigation from '../components/Navigation';
 

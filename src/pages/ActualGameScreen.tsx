@@ -45,7 +45,7 @@ const gameModeConfigs: { [key: string]: GameConfig } = {
 export default function ActualGameScreen() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { currentGame, setGamePhase, setTimeRemaining, addPlayer, assignRoles } = useGameStore();
+  const { setGamePhase } = useGameStore();
   const { savedWorlds, featuredWorlds } = useWorldStore();
 
   const worldId = searchParams.get('world');
