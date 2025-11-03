@@ -153,8 +153,14 @@ export default function WorldBuilderScreen() {
                 placeholder="Enter world name"
                 style={{
                   width: '100%',
-                  padding: '12px',
-                  fontSize: '16px'
+                  padding: '14px',
+                  fontSize: '16px',
+                  background: '#ffffff',  // White background for better contrast
+                  border: '2px solid #CBD5E1',
+                  borderRadius: '8px',
+                  color: '#0F172A',  // Darker text for better contrast
+                  outline: 'none',
+                  fontWeight: '500'
                 }}
               />
             </div>
@@ -173,11 +179,19 @@ export default function WorldBuilderScreen() {
                 onChange={(e) => setWorldDescription(e.target.value)}
                 placeholder="Describe your world..."
                 rows={3}
+                className="world-input"
                 style={{
                   width: '100%',
-                  padding: '12px',
+                  padding: '14px',
                   fontSize: '14px',
-                  resize: 'vertical'
+                  resize: 'vertical',
+                  background: '#ffffff',  // White background for better contrast
+                  border: '2px solid #CBD5E1',
+                  borderRadius: '8px',
+                  color: '#0F172A',  // Darker text for better contrast
+                  outline: 'none',
+                  fontWeight: '500',
+                  lineHeight: '1.5'
                 }}
               />
             </div>

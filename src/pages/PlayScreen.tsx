@@ -402,11 +402,12 @@ export default function PlayScreen() {
           }}>
             🎮 CHOOSE YOUR BATTLE! 🎮
           </h1>
-          <p style={{ 
-            fontSize: '16px', 
-            color: 'rgba(255, 255, 255, 0.9)',
+          <p style={{
+            fontSize: '16px',
+            color: '#1E293B',  // Dark slate color for better contrast
             fontWeight: '700',
-            marginTop: '8px'
+            marginTop: '8px',
+            textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
           }}>
             Time to show everyone who's boss! 💪
           </p>
@@ -419,12 +420,13 @@ export default function PlayScreen() {
         {/* Step 1: Choose Game Mode */}
         {step === 'mode' && (
           <div>
-            <h2 style={{ 
-              fontSize: '20px', 
-              fontWeight: 'bold', 
+            <h2 style={{
+              fontSize: '20px',
+              fontWeight: 'bold',
               marginBottom: '20px',
               textAlign: 'center',
-              color: '#ffffff'
+              color: '#1E293B',  // Dark slate color for better contrast
+              textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>
               How do you want to play?
             </h2>
@@ -476,11 +478,12 @@ export default function PlayScreen() {
               >
                 ← Back
               </button>
-              <h2 style={{ 
-                fontSize: '18px', 
+              <h2 style={{
+                fontSize: '18px',
                 fontWeight: 'bold',
                 textAlign: 'center',
-                color: '#ffffff',
+                color: '#1E293B',  // Dark slate color for better contrast
+                textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                 flex: 1
               }}>
                 Choose AI Difficulty
@@ -566,7 +569,7 @@ export default function PlayScreen() {
               >
                 ← Back
               </button>
-              <h2 style={{ flex: 1, textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#ffffff', margin: 0 }}>
+              <h2 style={{ flex: 1, textAlign: 'center', fontSize: '18px', fontWeight: 'bold', color: '#1E293B', margin: 0 }}>
                 Play with Friends
               </h2>
             </div>
@@ -586,17 +589,17 @@ export default function PlayScreen() {
                   cursor: 'pointer',
                   border: '2px solid transparent',
                   transition: 'all 0.3s ease',
-                  background: 'rgba(30, 41, 59, 0.9)'
+                  background: '#ffffff'  // White background
                 }}
                 onClick={() => setStep('world')}
                 onMouseEnter={(e) => e.currentTarget.style.borderColor = '#4ECDC4'}
                 onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}
               >
                 <div style={{ fontSize: '48px', marginBottom: '16px' }}>👑</div>
-                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '12px', color: '#4ECDC4' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '12px', color: '#1E293B' }}>
                   Host a Game
                 </h3>
-                <p style={{ fontSize: '14px', color: '#a0aec0', lineHeight: '1.5' }}>
+                <p style={{ fontSize: '14px', color: '#475569', lineHeight: '1.5' }}>
                   Create a lobby, choose a world, and invite friends with a code
                 </p>
               </button>
@@ -604,13 +607,13 @@ export default function PlayScreen() {
               {/* Join a Game */}
               <div className="card" style={{
                 padding: '30px 20px',
-                background: 'rgba(30, 41, 59, 0.9)'
+                background: '#ffffff'  // White background
               }}>
                 <div style={{ fontSize: '48px', textAlign: 'center', marginBottom: '16px' }}>🎮</div>
-                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '16px', textAlign: 'center', color: '#4ECDC4' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '16px', textAlign: 'center', color: '#1E293B' }}>
                   Join a Game
                 </h3>
-                <p style={{ fontSize: '14px', color: '#a0aec0', marginBottom: '20px', textAlign: 'center', lineHeight: '1.5' }}>
+                <p style={{ fontSize: '14px', color: '#475569', marginBottom: '20px', textAlign: 'center', lineHeight: '1.5' }}>
                   Enter your friend's lobby code
                 </p>
                 <div style={{
@@ -631,10 +634,10 @@ export default function PlayScreen() {
                       textAlign: 'center',
                       fontWeight: 'bold',
                       letterSpacing: '4px',
-                      background: 'rgba(15, 23, 42, 0.8)',
-                      border: '2px solid rgba(78, 205, 196, 0.3)',
+                      background: '#F8FAFC',  // Light gray background
+                      border: '2px solid #E2E8F0',
                       borderRadius: '12px',
-                      color: '#4ECDC4',
+                      color: '#1E293B',  // Dark text
                       outline: 'none',
                       transition: 'all 0.3s ease'
                     }}
@@ -643,7 +646,7 @@ export default function PlayScreen() {
                       e.target.style.boxShadow = '0 0 0 3px rgba(78, 205, 196, 0.1)';
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = 'rgba(78, 205, 196, 0.3)';
+                      e.target.style.borderColor = '#E2E8F0';
                       e.target.style.boxShadow = 'none';
                     }}
                   />
@@ -693,7 +696,8 @@ export default function PlayScreen() {
                 fontSize: '18px',
                 fontWeight: 'bold',
                 textAlign: 'center',
-                color: '#ffffff',
+                color: '#1E293B',  // Dark slate color for better contrast
+                textShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                 flex: 1
               }}>
                 Choose World {gameMode === 'ai' ? `(${selectedMode === 'easy' ? 'Easy AI' : selectedMode === 'hard' ? 'Hard AI' : 'Normal AI'})` : '(with Friends)'}
@@ -701,15 +705,15 @@ export default function PlayScreen() {
             </div>
             
             {allWorlds.length === 0 ? (
-              <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-                <Map size={48} color="rgba(255, 255, 255, 0.6)" />
-                <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: '16px 0', color: '#ffffff' }}>
+              <div className="card" style={{ textAlign: 'center', padding: '40px', background: '#ffffff' }}>
+                <Map size={48} color="#64748B" />
+                <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: '16px 0', color: '#1E293B' }}>
                   No worlds available
                 </h3>
-                <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.8)', marginBottom: '20px' }}>
+                <p style={{ fontSize: '14px', color: '#475569', marginBottom: '20px' }}>
                   Create your first world to start playing!
                 </p>
-                <button 
+                <button
                   className="button accent"
                   onClick={() => navigate('/world-builder')}
                 >
@@ -731,29 +735,45 @@ export default function PlayScreen() {
                     onClick={() => handleWorldSelect(world.id)}
                   >
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <img 
-                        src={world.thumbnail} 
-                        alt={world.name}
-                        style={{ 
-                          width: '60px', 
-                          height: '60px', 
-                          objectFit: 'cover', 
+                      {world.thumbnail ? (
+                        <img
+                          src={world.thumbnail}
+                          alt={world.name}
+                          style={{
+                            width: '60px',
+                            height: '60px',
+                            objectFit: 'cover',
+                            borderRadius: '12px',
+                            marginRight: '16px'
+                          }}
+                        />
+                      ) : (
+                        <div style={{
+                          width: '60px',
+                          height: '60px',
                           borderRadius: '12px',
-                          marginRight: '16px'
-                        }}
-                      />
+                          marginRight: '16px',
+                          background: 'linear-gradient(135deg, #4ECDC4 0%, #26D0CE 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '28px'
+                        }}>
+                          🗺️
+                        </div>
+                      )}
                       <div style={{ flex: 1 }}>
-                        <h3 style={{ 
-                          fontSize: '16px', 
-                          fontWeight: 'bold', 
+                        <h3 style={{
+                          fontSize: '16px',
+                          fontWeight: 'bold',
                           marginBottom: '4px',
-                          color: '#ffffff'
+                          color: '#1E293B'  // Dark slate for better contrast
                         }}>
                           {world.name}
                         </h3>
-                        <p style={{ 
-                          fontSize: '12px', 
-                          color: 'rgba(255, 255, 255, 0.7)',
+                        <p style={{
+                          fontSize: '12px',
+                          color: '#475569',  // Lighter slate for secondary text
                           marginBottom: '8px'
                         }}>
                           by {world.creatorName}

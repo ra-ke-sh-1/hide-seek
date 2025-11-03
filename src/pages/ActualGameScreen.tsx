@@ -54,7 +54,7 @@ export default function ActualGameScreen() {
   const gameId = searchParams.get('game');
   const config = gameModeConfigs[mode] || gameModeConfigs.ai;
 
-  const [playerPosition, setPlayerPosition] = useState({ x: 100, y: 150 });
+  const [playerPosition, setPlayerPosition] = useState({ x: 100, y: 140 }); // Grid-aligned to 20px grid
   const [seekerPosition, setSeekerPosition] = useState({ x: 0, y: 0 });
   const [gamePhase, setCurrentPhase] = useState<'hiding' | 'seeking' | 'ended'>('hiding');
   const [timeLeft, setTimeLeft] = useState(config.hidingPhaseDuration);
@@ -73,8 +73,14 @@ export default function ActualGameScreen() {
   const hasReachedDenRef = useRef(false); // Track if we've already marked hider as safe
 
   const gridSize = 20;
-  const canvasWidth = 500;
-  const canvasHeight = 300;
+  const canvasWidth = Math.min(window.innerWidth - 350, 600); // Match WorldBuilder, account for sidebar
+  const canvasHeight = Math.min(window.innerHeight - 300, 400); // Match WorldBuilder
+
+  // Helper function to snap coordinates to grid
+  const snapToGrid = (x: number, y: number) => ({
+    x: Math.round(x / gridSize) * gridSize,
+    y: Math.round(y / gridSize) * gridSize
+  });
 
   // Load world from store or database
   useEffect(() => {
@@ -416,8 +422,9 @@ export default function ActualGameScreen() {
   useEffect(() => {
     // In multiplayer, seekers spawn at the den
     if (isMultiplayer && currentPlayerRole === 'seeker') {
-      const denPos = selectedWorld?.seekerDen || { x: 450, y: 250 };
-      setPlayerPosition(denPos);
+      const denPos = selectedWorld?.seekerDen || { x: 460, y: 240 }; // Grid-aligned default
+      const snappedDen = snapToGrid(denPos.x, denPos.y);
+      setPlayerPosition(snappedDen);
       return;
     }
 
@@ -425,7 +432,7 @@ export default function ActualGameScreen() {
     if (selectedWorld?.spawnPoints && selectedWorld.spawnPoints.length > 0) {
       // Find a valid spawn point that's far enough from the den
       const validSpawns = selectedWorld.spawnPoints.filter(spawn => {
-        const denPos = selectedWorld.seekerDen || { x: 450, y: 250 };
+        const denPos = selectedWorld.seekerDen || { x: 460, y: 240 }; // Grid-aligned default
         const distance = Math.sqrt(
           Math.pow(spawn.x - denPos.x, 2) + Math.pow(spawn.y - denPos.y, 2)
         );
@@ -434,7 +441,8 @@ export default function ActualGameScreen() {
 
       if (validSpawns.length > 0) {
         const randomSpawn = validSpawns[Math.floor(Math.random() * validSpawns.length)];
-        setPlayerPosition(randomSpawn);
+        const snappedSpawn = snapToGrid(randomSpawn.x, randomSpawn.y);
+        setPlayerPosition(snappedSpawn);
       }
     }
   }, [selectedWorld, config.minSpawnDistance, isMultiplayer, currentPlayerRole]);
@@ -986,20 +994,23 @@ export default function ActualGameScreen() {
     // Reset positions
     if (selectedWorld?.spawnPoints && selectedWorld.spawnPoints.length > 0) {
       const validSpawns = selectedWorld.spawnPoints.filter(spawn => {
-        const denPos = selectedWorld.seekerDen || { x: 450, y: 250 };
+        const denPos = selectedWorld.seekerDen || { x: 460, y: 240 }; // Grid-aligned default
         const distance = Math.sqrt(
           Math.pow(spawn.x - denPos.x, 2) + Math.pow(spawn.y - denPos.y, 2)
         );
         return distance >= config.minSpawnDistance;
       });
-      
+
       if (validSpawns.length > 0) {
         const randomSpawn = validSpawns[Math.floor(Math.random() * validSpawns.length)];
-        setPlayerPosition(randomSpawn);
+        const snappedSpawn = snapToGrid(randomSpawn.x, randomSpawn.y);
+        setPlayerPosition(snappedSpawn);
       }
     }
-    
-    setSeekerPosition(selectedWorld?.seekerDen || { x: 450, y: 250 });
+
+    const denPos = selectedWorld?.seekerDen || { x: 460, y: 240 }; // Grid-aligned default
+    const snappedDen = snapToGrid(denPos.x, denPos.y);
+    setSeekerPosition(snappedDen);
   };
 
   const handleGoHome = () => {
@@ -1408,17 +1419,58 @@ export default function ActualGameScreen() {
 
           {/* Fog of War - Circular Visibility */}
           {/* Only show fog during seeking phase, or during hiding phase for seekers */}
-          {(gamePhase === 'seeking' || (gamePhase === 'hiding' && currentPlayerRole === 'seeker')) && (
-            <div style={{
+          {(gamePhase === 'seeking' || (gamePhase === 'hiding' && currentPlayerRole === 'seeker')) && selectedWorld?.seekerDen && (
+            <svg style={{
               position: 'absolute',
               top: 0,
               left: 0,
-              right: 0,
-              bottom: 0,
-              background: `radial-gradient(circle ${currentPlayerRole === 'seeker' ? '80px' : '70px'} at ${playerPosition.x + 10}px ${playerPosition.y + 10}px, transparent 0%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.95) 100%)`,
+              width: '100%',
+              height: '100%',
               pointerEvents: 'none',
               zIndex: 15
-            }} />
+            }}>
+              <defs>
+                {/* Player visibility gradient - reversed for correct mask */}
+                <radialGradient id="player-grad">
+                  <stop offset="0%" stopColor="black" />
+                  <stop offset="40%" stopColor="rgba(0, 0, 0, 0.7)" />
+                  <stop offset="100%" stopColor="white" />
+                </radialGradient>
+                {/* Den visibility gradient - same foggy effect as player */}
+                <radialGradient id="den-grad">
+                  <stop offset="0%" stopColor="black" />
+                  <stop offset="40%" stopColor="rgba(0, 0, 0, 0.7)" />
+                  <stop offset="100%" stopColor="white" />
+                </radialGradient>
+                {/* Mask with both visibility circles */}
+                <mask id="fog-mask">
+                  {/* Start with white (everything visible/fog shows) */}
+                  <rect width="100%" height="100%" fill="white" />
+                  {/* Player visibility (black = cut through fog) */}
+                  <circle
+                    cx={playerPosition.x + 10}
+                    cy={playerPosition.y + 10}
+                    r={currentPlayerRole === 'seeker' ? 80 : 70}
+                    fill="url(#player-grad)"
+                  />
+                  {/* Den visibility (black = cut through fog) - matches 50px den size */}
+                  <circle
+                    cx={selectedWorld.seekerDen.x}
+                    cy={selectedWorld.seekerDen.y}
+                    r={50}
+                    fill="url(#den-grad)"
+                  />
+                </mask>
+              </defs>
+              {/* Dark fog with mask applied */}
+              <rect
+                width="100%"
+                height="100%"
+                fill="black"
+                opacity="1"
+                mask="url(#fog-mask)"
+              />
+            </svg>
           )}
         </div>
 

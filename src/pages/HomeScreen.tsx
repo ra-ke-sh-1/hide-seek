@@ -62,7 +62,7 @@ export default function HomeScreen() {
 
       
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '32px' }}>
+        <div style={{ marginBottom: '32px' }}>
           {/* Quick Actions */}
       <div style={{ padding: '24px', paddingBottom: '0'}}>
         <button 
